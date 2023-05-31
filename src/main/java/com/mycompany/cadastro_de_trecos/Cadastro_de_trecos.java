@@ -1,11 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Project/Maven2/JavaApp/src/main/java/${packagePath}/${mainClassName}.java to edit this template
- */
-
 package com.mycompany.cadastro_de_trecos;
 
-import java.sql.SQLException;
+import com.mycompany.cadastro_de_trecos.setup.AppSetup;
+import com.mycompany.cadastro_de_trecos.crud.Read;
+import com.mycompany.cadastro_de_trecos.crud.Create;
+import com.mycompany.cadastro_de_trecos.crud.Delete;
+import com.mycompany.cadastro_de_trecos.crud.Search;
+import com.mycompany.cadastro_de_trecos.crud.Update;
 
 public class Cadastro_de_trecos extends AppSetup {
 
@@ -17,35 +17,56 @@ public class Cadastro_de_trecos extends AppSetup {
     // Método que exibe o menu principal.
     public static void mainMenu() {
 
-        System.out.println( appName + '\n');
+        System.out.println(appName + "\n" + appSep);
         System.out.println("Menu:");
         System.out.println("\t[1] Listar todos");
         System.out.println("\t[2] Listar");
         System.out.println("\t[3] Novo");
         System.out.println("\t[4] Editar");
         System.out.println("\t[5] Apagar");
+        System.out.println("\t[6] Pesquisar");
         System.out.println("\t[0] Sair");
-        System.out.print("\nOpção: ");
+        System.out.println(appSep);
+        System.out.print("Opção: ");
 
         // Recebe a opção do teclado.
         String option = scanner.next();
 
         // Executa um método conforme a opção escolhida.
         switch (option) {
-            case "0" ->
+            case "0":
                 exitProgram();
-            case "1" ->
-                listAll();
-            case "2" ->
-                listOne();
-            case "3" ->
-                newThing();
-            case "4" ->
-                editThing();
-            case "5" ->
-                deleteThing();
-            default ->
-                reloadMenu();
+                break;
+            case "1":
+                clearScreen();
+                Read.readAll();
+                break;
+            case "2":
+                clearScreen();
+                Read.read();
+                break;
+            case "3":
+                clearScreen();
+                Create.create();
+                break;
+            case "4":
+                clearScreen();
+                Update.update();
+                break;
+            case "5":
+                clearScreen();
+                Delete.delete();
+                break;
+            
+            case "6":
+                clearScreen();
+                Search.search();
+                break;
+
+            default:
+                clearScreen();
+                System.out.println("Opção inválida.\n");
+                mainMenu();
         }
     }
 
@@ -55,35 +76,6 @@ public class Cadastro_de_trecos extends AppSetup {
         clearScreen();
         System.out.println("\n\nFui!\n\n");
         System.exit(0);
-    }
-
-    // Lista todos os trecos cadastrados.
-    public static void listAll() {
-
-      
-    }
-
-    // Lista um treco específico pelo Id.
-    public static void listOne() {
-    }
-
-    // Cadastra um novo treco.
-    public static void newThing() {
-    }
-
-    // Edita um treco pelo Id.
-    public static void editThing() {
-    }
-
-    // Apaga um treco pelo Id.
-    public static void deleteThing() {
-    }
-
-    // Recarrega o menu principal.
-    public static void reloadMenu() {
-        clearScreen(); // Limpa o terminal.
-        System.out.println("Oooops! Opção inválida!\n");
-        mainMenu();    // Mostra o menu.
     }
 
     // Limpa a tela do terminal.
