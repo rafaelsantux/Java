@@ -7,9 +7,14 @@ import static com.mycompany.cadastro_de_trecos.setup.AppSetup.*;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.*;
 
 public class Read extends AppSetup {
-
+ 
+    static String mostraStatus;
+    
     // Lista todos os registros.
     public static void readAll() {
+        
+        
+         
 
         // Cabeçalho da view.
         System.out.println(appName + "\n" + appSep);
@@ -19,7 +24,8 @@ public class Read extends AppSetup {
         try {
 
             // Consulta o banco de dados.
-            String sql = "SELECT * FROM things";
+            String sql = "SELECT *, DATE_FORMAT(data,'%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLES + " WHERE status != '0' ORDER BY nome";
+           
             conn = DbConnection.dbConnect();
             stmt = conn.createStatement();
             res = stmt.executeQuery(sql);
@@ -29,12 +35,22 @@ public class Read extends AppSetup {
 
                 // Se encontrou registros.
                 do {
+                    
+                    if (res.getString("status").equals("1")){
+                        mostraStatus = "BLOQUEADO";
+                        
+                    }else{
+                        mostraStatus = "ATIVO";
+                    }
 
                     // Exibe registro na view.
                     System.out.println(
                             "ID: " + res.getString("id") + "\n"
-                            + "  Nome: " + res.getString("name") + "\n"
-                            + "  Descrição: " + res.getString("description") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Data de cadastro: " + res.getString("databr") + "\n"
+                            + "  Status: " + mostraStatus + "\n"
                     );
                 } while (res.next());
             } else {
@@ -74,7 +90,7 @@ public class Read extends AppSetup {
         } catch (SQLException error) {
 
             // Tratamento de erros.
-            System.out.println("Oooops! " + error.getMessage());
+            System.out.println("Oops! " + error.getMessage());
             System.exit(0);
         }
 
@@ -112,7 +128,7 @@ public class Read extends AppSetup {
         try {
 
             // Faz consulta no banco de dados usando "preparedStatement".
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT *, DATE_FORMAT(data,'%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLES + " WHERE status != '0' AND id = ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
 
@@ -125,12 +141,22 @@ public class Read extends AppSetup {
             if (res.next()) {
 
                 // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  "
-                        + "Descrição: " + res.getString("description") + "\n"
-                );
+                if (res.getString("status").equals("1")){
+                        mostraStatus = "BLOQUEADO";
+                        
+                    }else{
+                        mostraStatus = "ATIVO";
+                    }
+
+                    // Exibe registro na view.
+                    System.out.println(
+                            "ID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Data de cadastro: " + res.getString("databr") + "\n"
+                            + "  Status: " + mostraStatus + "\n"
+                    );
             } else {
 
                 // Se não tem registro.

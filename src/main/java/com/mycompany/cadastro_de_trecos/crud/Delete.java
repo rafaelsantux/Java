@@ -9,6 +9,8 @@ import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 
 public class Delete extends AppSetup {
 
+    
+    
     public static void delete() {
 
         // Reserva recursos para o banco de dados.
@@ -40,7 +42,7 @@ public class Delete extends AppSetup {
         try {
 
             // Verifica se o registro existe.
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT * FROM " + DBTABLES + " WHERE id = ? AND status = '2'";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
@@ -48,17 +50,30 @@ public class Delete extends AppSetup {
 
             if (res.next()) {
 
-                // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
-                        + "  Descrição: " + res.getString("description") + "\n"
+                String sepDH[] = res.getString("data").split(" ");
+                    String sepD[] = sepDH[0].split("-");
+                    String novoDH = sepD[2] + "/" + sepD[1] + "/" + sepD[0] + " " + sepDH[1];
+                    String nStatus = null;
+                    if (res.getString("status").equals("1")) {
+                        nStatus = "BLOQUEADO";
+                    }
+                    if (res.getString("status").equals("2")) {
+                        nStatus = "ATIVO";
+                    }
+                    // Exibe registro na view.
+                    System.out.println(
+                            "\nID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  Descrição: " + res.getString("descricao") + "\n"
+                            + "  Localização: " + res.getString("localizacao") + "\n"
+                            + "  Status: " + nStatus + "\n"
+                            + "  Data: " + novoDH + "\n"
                 );
 
                 System.out.print("Tem certeza que deseja apagar o registro? [s/N] ");
                 if (scanner.next().trim().toLowerCase().equals("s")) {
 
-                    sql = "DELETE FROM " + DBTABLE + " WHERE id = ?";
+                    sql = "UPDATE" + DBTABLES + " SET status = '0' WHERE id = ? AND status = '2'";
                     pstm = conn.prepareStatement(sql);
                     pstm.setInt(1, id);
                     if (pstm.executeUpdate() == 1) {

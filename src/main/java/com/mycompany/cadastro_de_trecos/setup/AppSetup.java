@@ -20,7 +20,7 @@ public class AppSetup {
     // String de conexão com o banco de dados MySQL
     //                                            tipo    servidor  porta database   usuário       senha
     //                                             ↓       ↓         ↓     ↓           ↓             ↓ 
-    protected static final String MYSQLURL = "jdbc:mysql://localhost:3306/things?user=root&password=";
+    protected static final String MYSQLURL = "jdbc:mysql://localhost:3306/crudinho?user=root&password=";
 
     // String de conexão com o banco de dados PostGreeSQL
     //                                               tipo         servidor  porta database   usuário      senha
@@ -29,6 +29,9 @@ public class AppSetup {
 
     // Tabela principal.
     protected static final String DBTABLE = "things";
+    
+    //String de conexão com o banco de dados "crudinho"
+    protected static final String DBTABLES = "trecos";
 
     // Objeto que recebe dados do teclado.
     protected static Scanner scanner = new Scanner(System.in, "latin1");

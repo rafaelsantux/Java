@@ -43,11 +43,12 @@ public static void search() {
         try {
 
             // Faz consulta no banco de dados usando "preparedStatement".
-            sql = "SELECT * FROM " + DBTABLE + " WHERE name LIKE ? OR description LIKE ?";
+            sql = "SELECT * FROM " + DBTABLES + " WHERE nome LIKE ? OR descricao LIKE ? OR localizacao LIKE ?";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setString(1, "%" + pesquisa + "%");
             pstm.setString(2, "%" + pesquisa + "%");
+            pstm.setString(3, "%" + pesquisa + "%");
             
        
             // Executa a query.
@@ -58,9 +59,11 @@ public static void search() {
                 // Se tem registro, exibe na view.
                 System.out.println(
                         "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
+                        + "  Nome: " + res.getString("nome") + "\n"
                         + "  "
-                        + "Descrição: " + res.getString("description") + "\n"
+                        + "Descrição: " + res.getString("descricao") + "\n"
+                        + "  "
+                        + "Localização: " + res.getString("localizacao") + "\n"
                 );
             } else {
 

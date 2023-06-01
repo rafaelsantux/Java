@@ -39,7 +39,7 @@ public class Update extends AppSetup {
         try {
 
             // Obtém o registro solicitado do banco de dados.
-            sql = "SELECT * FROM " + DBTABLE + " WHERE id = ?";
+            sql = "SELECT *, DATE_FORMAT(data,'%d/%m/%Y às %H:%i') AS databr FROM " + DBTABLES + " WHERE status != '0'";
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, id);
@@ -49,7 +49,7 @@ public class Update extends AppSetup {
                 // Se tem registro, exibe na view.
                 System.out.println(
                         "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("name") + "\n"
+                        + "  Nome: " + res.getString("nome") + "\n"
                         + "  Descrição: " + res.getString("description") + "\n"
                 );
 
