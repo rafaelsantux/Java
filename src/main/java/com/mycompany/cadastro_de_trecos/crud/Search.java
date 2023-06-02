@@ -1,18 +1,17 @@
 package com.mycompany.cadastro_de_trecos.crud;
 
 // Lista um único registro pelo id.
-
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.clearScreen;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.exitProgram;
 import static com.mycompany.cadastro_de_trecos.Cadastro_de_trecos.mainMenu;
 import com.mycompany.cadastro_de_trecos.db.DbConnection;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import java.sql.SQLException;
+import java.util.Scanner;
 
+public class Search extends AppSetup {
 
-public class Search extends AppSetup {  
-      
-public static void search() {
+    public static void search() {
 
         // Reserva recursos para o banco de dados.
         String pesquisa = "";
@@ -26,8 +25,9 @@ public static void search() {
         try {
 
             // Recebe o Id do teclado.
+            Scanner kbd = new Scanner(System.in);
             System.out.print("Digite uma palavra chave:");
-            pesquisa = scanner.next().trim();
+            pesquisa = kbd.nextLine().trim();
             if (pesquisa.equals("")) {
                 clearScreen();
                 mainMenu();
@@ -43,28 +43,30 @@ public static void search() {
         try {
 
             // Faz consulta no banco de dados usando "preparedStatement".
-            sql = "SELECT * FROM " + DBTABLES + " WHERE nome LIKE ? OR descricao LIKE ? OR localizacao LIKE ?";
+            sql = "SELECT * FROM " + DBTABLES + " WHERE (status != '0') AND (nome LIKE ? OR descricao LIKE ? OR localizacao LIKE ? )";
+
             conn = DbConnection.dbConnect();
             pstm = conn.prepareStatement(sql);
             pstm.setString(1, "%" + pesquisa + "%");
             pstm.setString(2, "%" + pesquisa + "%");
             pstm.setString(3, "%" + pesquisa + "%");
-            
-       
+
             // Executa a query.
             res = pstm.executeQuery();
 
             if (res.next()) {
 
-                // Se tem registro, exibe na view.
-                System.out.println(
-                        "\nID: " + res.getString("id") + "\n"
-                        + "  Nome: " + res.getString("nome") + "\n"
-                        + "  "
-                        + "Descrição: " + res.getString("descricao") + "\n"
-                        + "  "
-                        + "Localização: " + res.getString("localizacao") + "\n"
-                );
+                do {
+                    // Se tem registro, exibe na view.
+                    System.out.println(
+                            "\nID: " + res.getString("id") + "\n"
+                            + "  Nome: " + res.getString("nome") + "\n"
+                            + "  "
+                            + "Descrição: " + res.getString("descricao") + "\n"
+                            + "  "
+                            + "Localização: " + res.getString("localizacao") + "\n"
+                    );
+                } while (res.next());
             } else {
 
                 // Se não tem registro.
@@ -103,8 +105,6 @@ public static void search() {
                     search();
                 }
             }
-            
-            
 
         } catch (SQLException error) {
 
@@ -116,6 +116,3 @@ public static void search() {
     }
 
 }
-
-    
-

@@ -1,5 +1,6 @@
 package com.mycompany.cadastro_de_trecos;
 
+import com.mycompany.cadastro_de_trecos.crud.Changes;
 import com.mycompany.cadastro_de_trecos.setup.AppSetup;
 import com.mycompany.cadastro_de_trecos.crud.Read;
 import com.mycompany.cadastro_de_trecos.crud.Create;
@@ -25,6 +26,7 @@ public class Cadastro_de_trecos extends AppSetup {
         System.out.println("\t[4] Editar");
         System.out.println("\t[5] Apagar");
         System.out.println("\t[6] Pesquisar");
+        System.out.println("\t[7] Bloquear/Desbloquear");
         System.out.println("\t[0] Sair");
         System.out.println(appSep);
         System.out.print("Opção: ");
@@ -61,6 +63,10 @@ public class Cadastro_de_trecos extends AppSetup {
             case "6":
                 clearScreen();
                 Search.search();
+                break;
+            case "7":
+                clearScreen();
+                Changes.change();
                 break;
 
             default:
